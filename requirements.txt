@@ -3,9 +3,9 @@ h5py
 torch
 fasteners
 annoy
+freeze
 xxhash
 lz4
-freeze
 pymagnitude
 gensim
 pyperclip
