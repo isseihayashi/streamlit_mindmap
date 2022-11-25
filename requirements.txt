@@ -4,7 +4,6 @@ matplotlib
 pymagnitude
 gensim
 pyperclip
-freeze
 torch
 fasteners
 annoy
