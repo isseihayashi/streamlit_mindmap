@@ -1,3 +1,4 @@
 default-jre
+fonts-takao-pgothic
 japan*
 fonts-unfonts-core
