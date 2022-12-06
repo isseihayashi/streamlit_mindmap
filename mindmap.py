@@ -106,7 +106,6 @@ def main():
         plt.gca().spines['bottom'].set_visible(False)
 
         G = nx.Graph()
-
         # nodeデータの追加
         G.add_nodes_from(raw_words) 
         # edgeデータの追加
