@@ -117,7 +117,7 @@ def main():
         nx.draw_networkx_nodes(G, pos, node_size=1500, node_color = "#f5eeff")
         nx.draw_networkx_labels(G, pos, font_family='IPA mona PGothic', font_weight="bold")
         nx.draw_networkx_edges(G, pos, alpha=0.4, edge_color='#0f0f0f')
-        throw('aあ')
+        raise ValueError("aあ!")
         
     else:
         fig = st.session_state.fig
