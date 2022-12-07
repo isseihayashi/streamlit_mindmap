@@ -14,7 +14,6 @@ import os, glob
 from pymagnitude import Magnitude, MagnitudeUtils
 import matplotlib.font_manager 
 
-NLP_PATH = r"%USERPROFILE%\Desktop\synonym.exe"
 # NLP_PATH = r"\\sd-ai-cpu01\k220415243\WORK\synonym.exe"
 
 def main():
