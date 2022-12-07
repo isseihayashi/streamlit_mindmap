@@ -18,7 +18,7 @@ NLP_PATH = r"%USERPROFILE%\Desktop\synonym.exe"
 # NLP_PATH = r"\\sd-ai-cpu01\k220415243\WORK\synonym.exe"
 
 def main():
-
+    matplotlib.font_manager._rebuild()
     raise (print(matplotlib.font_manager.findSystemFonts()))
     # ------------------------------- サイドバー -------------------------------
     input_text_main = st.sidebar.text_area('入力画面',height=350, key='input')
