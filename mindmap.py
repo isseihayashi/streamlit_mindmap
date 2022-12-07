@@ -12,8 +12,9 @@ from zipfile import ZipFile
 import tempfile
 import os, glob
 from pymagnitude import Magnitude, MagnitudeUtils
-
-
+import matplotlib
+matplotlib.font_manager._rebuild()
+matplotlib.font_manager.findSystemFonts()
 NLP_PATH = r"%USERPROFILE%\Desktop\synonym.exe"
 # NLP_PATH = r"\\sd-ai-cpu01\k220415243\WORK\synonym.exe"
 
