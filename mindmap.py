@@ -68,13 +68,12 @@ def main():
     #自分とカウントが差異1のモノが来たら繋げる
     #同値のものがきたら閉じる
     for index, word in enumerate(words):
-        # prepare for node
+        
         raw_words.append(word.replace(replace_keyword, ''))
-        # count current level
         current_level = word.count(replace_keyword)
+        
         # search 1step down level below
         for word_obj in words[index+1:]:
-            # count level of obj
             level_obj = word_obj.count(replace_keyword)
             dif_level = level_obj - current_level
 
@@ -84,11 +83,6 @@ def main():
             elif dif_level == 1:
                 edge_list.append((word.replace(replace_keyword,''), word_obj.replace(replace_keyword,'')))
 
-
-    
-    #TODO グラフの構成が変わったときのみ更新したい
-    # グラフの構成とは…？
-    # 候補：input_text
     try:
         pre_input_text_main = st.session_state.text_main
         is_changed = input_text_main != pre_input_text_main
@@ -115,7 +109,11 @@ def main():
 
         # グラフ描画設定
         nx.draw_networkx_nodes(G, pos, node_size=1500, node_color = "#f5eeff")
-        nx.draw_networkx_labels(G, pos, font_family='TakaoGothic', font_weight="bold")
+        # FIXME Streamlit cloud(Sharing)で日本語が表示されない(□になる)
+        # ローカル環境では表示できているので、サーバー上にフォントが存在しないことが原因だと思われる
+        # 'packages.txt'内に記述することでフォントのDLを実現しているがなぜか存在しないと判定される
+        # 
+        nx.draw_networkx_labels(G, pos, font_family='TakaoGothic')
         nx.draw_networkx_edges(G, pos, alpha=0.4, edge_color='#0f0f0f')
 
     else:
