@@ -12,14 +12,15 @@ from zipfile import ZipFile
 import tempfile
 import os, glob
 from pymagnitude import Magnitude, MagnitudeUtils
-import matplotlib
-matplotlib.font_manager._rebuild()
-matplotlib.font_manager.findSystemFonts()
+import matplotlib as mpl
+
 NLP_PATH = r"%USERPROFILE%\Desktop\synonym.exe"
 # NLP_PATH = r"\\sd-ai-cpu01\k220415243\WORK\synonym.exe"
 
 def main():
 
+    mpl.font_manager._rebuild()
+    print("設定ファイルの場所\n\t", mpl.matplotlib_fname())
     # ------------------------------- サイドバー -------------------------------
     input_text_main = st.sidebar.text_area('入力画面',height=350, key='input')
     
