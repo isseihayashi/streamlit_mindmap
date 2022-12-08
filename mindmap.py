@@ -18,7 +18,7 @@ import matplotlib.font_manager
 
 def main():
     
-    raise (print(matplotlib.font_manager.findSystemFonts()))
+    # raise (print(matplotlib.font_manager.findSystemFonts()))
     # ------------------------------- サイドバー -------------------------------
     input_text_main = st.sidebar.text_area('入力画面',height=350, key='input')
     
@@ -113,7 +113,7 @@ def main():
         # ローカル環境では表示できているので、サーバー上にフォントが存在しないことが原因だと思われる
         # 'packages.txt'内に記述することでフォントのDLを実現しているがなぜか存在しないと判定される
         # 
-        nx.draw_networkx_labels(G, pos, font_family='TakaoGothic')
+        nx.draw_networkx_labels(G, pos, font_family='fonts-japanese-mincho')
         nx.draw_networkx_edges(G, pos, alpha=0.4, edge_color='#0f0f0f')
 
     else:
