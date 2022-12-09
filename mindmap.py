@@ -109,10 +109,6 @@ def main():
 
         # グラフ描画設定
         nx.draw_networkx_nodes(G, pos, node_size=1500, node_color = "#f5eeff")
-        # FIXME Streamlit cloud(Sharing)で日本語が表示されない(□になる)
-        # ローカル環境では表示できているので、サーバー上にフォントが存在しないことが原因だと思われる
-        # 'packages.txt'内に記述することでフォントのDLを実現しているがなぜか存在しないと判定される
-        # 
         nx.draw_networkx_labels(G, pos, font_family='IPAexGothic')
         nx.draw_networkx_edges(G, pos, alpha=0.4, edge_color='#0f0f0f')
 
