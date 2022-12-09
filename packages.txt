@@ -1,3 +1,5 @@
 default-jre
 japan*
 fonts-unfonts-core
+xclip
+libgtk-3-dev
