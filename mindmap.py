@@ -136,8 +136,9 @@ def main():
         for index, result in enumerate(st.session_state.result_word[:5]):
             col = st.columns(2)
             col[0].write(result)
-            if col[1].button('COPY', key=index):
-                pyperclip.copy(result.replace('[','').replace(']',''))
+            # copyボタンが役にたっていないので一時的にコメントアウト
+            # if col[1].button('COPY', key=index):
+            #     pyperclip.copy(result.replace('[','').replace(']',''))
     except Exception as e:
         print(e)
 
