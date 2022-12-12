@@ -2,49 +2,45 @@ from re import sub
 import streamlit as st
 import networkx as nx
 import matplotlib.pyplot as plt
-import os
 import datetime
-import subprocess
-import pyperclip
 from gensim.models import KeyedVectors
-import gensim
 from zipfile import ZipFile
-import tempfile
-import os, glob
 from pymagnitude import Magnitude, MagnitudeUtils
-import matplotlib.font_manager 
-
-# NLP_PATH = r"\\sd-ai-cpu01\k220415243\WORK\synonym.exe"
+from subprocess import PIPE
 
 def main():
-    
-    # raise (print(matplotlib.font_manager.findSystemFonts()))
     # ------------------------------- サイドバー -------------------------------
     input_text_main = st.sidebar.text_area('入力画面',height=350, key='input')
-    
 
     st.sidebar.download_button(
         label="保存",
         data=input_text_main,
         file_name=f'{datetime.datetime.now().strftime("%Y%m%d%H%M%S")}.txt'
     )
-
-    input_text_search = st.sidebar.text_input('類似単語')
     # 初回だけLocalにモデルをDLしてる？
     model = Magnitude(MagnitudeUtils.download_model("chive-1.1-mc90-aunit", remote_path="https://sudachi.s3-ap-northeast-1.amazonaws.com/chive/"))
+    input_divine_word = st.sidebar.selectbox('区切り文字', ['。', '、', '.', ',', ' ', '_', '-', '/'])
+    serch_type = st.sidebar.radio('',('類似単語検索', '単語足し算'))
 
-    if st.sidebar.button(label='SEARCH'):
-        if input_text_search == "":
-            st.error("検索単語を入力して下さい")
-        else:
-            print('Begin Search')
-            from subprocess import PIPE
-            # reserch_result = subprocess.run(NLP_PATH +" "+ input_text_search, shell=True, stdout=PIPE, stderr=PIPE, text=True)
-            reserch_result = model.most_similar(input_text_search, topn=5)
-            result_list = reserch_result
-            st.session_state.result_word = [result[0] for result in result_list]
+    if serch_type == '類似単語検索':
+        input_text_search = st.sidebar.text_input('類似単語')
+        if st.sidebar.button(label='SEARCH', key='search_from_single'):
+            if input_text_search == "":
+                st.error("検索単語を入力して下さい")
+            else:
+                result_list = model.most_similar(input_text_search, topn=5)
+                st.session_state.result_word = [result[0] for result in result_list]
 
-    input_divine_word = st.sidebar.selectbox('区切り文字', ['.', ',', ' ', '_', '-', '/', '、', '。'])
+    if serch_type == '単語足し算':
+        word_pos01=st.sidebar.text_input('1つ目の単語', '')
+        word_pos02=st.sidebar.text_input('2つ目の単語', '')
+        if st.sidebar.button(label='SEARCH', key='sum_words'):
+            if word_pos01 == "":
+                st.error("検索単語を入力して下さい")
+            else:
+                result_list = model.most_similar(positive=[word_pos01, word_pos02], topn=5)
+                st.session_state.result_word = [result[0] for result in result_list]
+    
     input_upload = st.sidebar.file_uploader("ファイルアップロード", type='txt')
 
     if type(input_upload) == type(None):
@@ -65,14 +61,13 @@ def main():
     edge_list = []
     replace_keyword = input_divine_word
 
-    #自分とカウントが差異1のモノが来たら繋げる
-    #同値のものがきたら閉じる
+    # マインドマップ描画のために区切り文字を除いた単語リストと関係を表すエッジリストを作成
     for index, word in enumerate(words):
         
         raw_words.append(word.replace(replace_keyword, ''))
         current_level = word.count(replace_keyword)
         
-        # search 1step down level below
+        # 区切り文字の数が1つ多いものを探しつなげる
         for word_obj in words[index+1:]:
             level_obj = word_obj.count(replace_keyword)
             dif_level = level_obj - current_level
@@ -91,6 +86,7 @@ def main():
         is_changed = True
         print(e)
 
+    # input_text_mainが変更されたときのみグラフを生成する(毎回グラフが変更されるのを防ぐため)
     if is_changed:
         # Graphオブジェクトの作成
         fig = plt.figure(figsize=(width, height))
@@ -118,16 +114,12 @@ def main():
 
     # グラフ描画
     st.pyplot(fig)
-
     st.session_state.text_main = input_text_main
     st.session_state.fig = fig
 
-    # 類似単語検索結果
-
     '''
-    類似単語検索結果
+    検索結果
     '''
-
     try:
         for index, result in enumerate(st.session_state.result_word[:5]):
             col = st.columns(2)
