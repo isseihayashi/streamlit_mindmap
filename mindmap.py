@@ -101,8 +101,8 @@ def main():
         # edgeデータの追加
         G.add_edges_from(edge_list)
         # ネットワークの可視化
-        pos = nx.spring_layout(G, k=0.9)
-
+        # pos = nx.spring_layout(G, k=0.9)
+        pos = nx.planar_layout(G)
         # グラフ描画設定
         nx.draw_networkx_nodes(G, pos, node_size=1500, node_color = "#f5eeff")
         nx.draw_networkx_labels(G, pos, font_family='IPAexGothic')
