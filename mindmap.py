@@ -20,7 +20,7 @@ def main():
     # 初回だけLocalにモデルをDLしてる？
     model = Magnitude(MagnitudeUtils.download_model("chive-1.1-mc90-aunit", remote_path="https://sudachi.s3-ap-northeast-1.amazonaws.com/chive/"))
     input_divine_word = st.sidebar.selectbox('区切り文字', ['。', '、', '.', ',', ' ', '_', '-', '/'])
-    serch_type = st.sidebar.radio('',('類似単語検索', '単語足し算'))
+    serch_type = st.sidebar.radio('',('類似単語検索', '単語足し算', '単語引き算'))
 
     if serch_type == '類似単語検索':
         input_text_search = st.sidebar.text_input('類似単語')
@@ -39,6 +39,16 @@ def main():
                 st.error("検索単語を入力して下さい")
             else:
                 result_list = model.most_similar(positive=[word_pos01, word_pos02], topn=5)
+                st.session_state.result_word = [result[0] for result in result_list]
+    
+    if serch_type == '単語引き算':
+        word_pos01=st.sidebar.text_input('1つ目の単語', '')
+        word_pos02=st.sidebar.text_input('2つ目の単語', '')
+        if st.sidebar.button(label='SEARCH', key='neg_words'):
+            if word_pos01 == "":
+                st.error("検索単語を入力して下さい")
+            else:
+                result_list = model.most_similar(negative=[word_pos01, word_pos02], topn=5)
                 st.session_state.result_word = [result[0] for result in result_list]
     
     input_upload = st.sidebar.file_uploader("ファイルアップロード", type='txt')
@@ -101,8 +111,8 @@ def main():
         # edgeデータの追加
         G.add_edges_from(edge_list)
         # ネットワークの可視化
-        # pos = nx.spring_layout(G, k=0.9)
-        pos = nx.planar_layout(G)
+        pos = nx.spring_layout(G, k=0.9)
+        # pos = nx.planar_layout(G)
         # グラフ描画設定
         nx.draw_networkx_nodes(G, pos, node_size=1500, node_color = "#f5eeff")
         nx.draw_networkx_labels(G, pos, font_family='IPAexGothic')
