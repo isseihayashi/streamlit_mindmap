@@ -48,7 +48,7 @@ def main():
             if word_pos01 == "":
                 st.error("検索単語を入力して下さい")
             else:
-                result_list = model.most_similar(negative=[word_pos01, word_pos02], topn=5)
+                result_list = model.most_similar(positive=[word_pos01], negative=[word_pos02], topn=5)
                 st.session_state.result_word = [result[0] for result in result_list]
     
     input_upload = st.sidebar.file_uploader("ファイルアップロード", type='txt')
